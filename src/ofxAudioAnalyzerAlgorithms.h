@@ -51,6 +51,7 @@ enum ofxAAAlgorithm{
     ODD_TO_EVEN,
     STRONG_PEAK,
     STRONG_DECAY,
+    LOG_ATTACK_TIME,
     SPECTRUM,
     MEL_BANDS,
     MFCC,
@@ -255,6 +256,11 @@ private:
     
     float pitchMaxEstimatedValue;
 
+};
+
+class ofxAALogAttackTimeAlgorithm : public ofxAABaseAlgorithm {
+public:
+  Real attackStart, attackStop;
 };
 
 //---------------------------------------------------------------------

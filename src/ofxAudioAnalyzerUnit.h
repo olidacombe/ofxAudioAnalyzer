@@ -51,6 +51,7 @@ using namespace standard;
 #define DCT_COEFF_NUM 13
 #define PITCH_SALIENCE_FUNC_NUM 10
 #define TRISTIMULUS_BANDS_NUM 3
+#define LOGATTACK_OUTPUT_VEC_SIZE 3
 
 #define HPCP_SIZE 12
 #define HPCP_MIN_FREQ 40.0//hz
@@ -126,6 +127,7 @@ private:
     ofxAABaseAlgorithm oddToEven;
     ofxAABaseAlgorithm strongPeak;
     ofxAABaseAlgorithm strongDecay;
+    ofxAALogAttackTimeAlgorithm logAttackTime;
     
     ofxAAOneVectorOutputAlgorithm spectrum;
     ofxAAOneVectorOutputAlgorithm melBands;
