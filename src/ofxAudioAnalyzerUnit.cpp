@@ -627,6 +627,27 @@ bool ofxAudioAnalyzerUnit::getIsActive(ofxAAAlgorithm algorithm){
     }
 
 }
+
+float ofxAudioAnalyzerUnit::getAttackStart(ofxAAAlgorithm algorithm) {
+  switch(algorithm) {
+    case LOG_ATTACK_TIME:
+      return logAttackTime.getAttackStart();
+      //break; // erm...
+    default:
+      return 0.0;
+      //break;
+  }
+}
+
+float ofxAudioAnalyzerUnit::getAttackStop(ofxAAAlgorithm algorithm) {
+  switch(algorithm) {
+    case LOG_ATTACK_TIME:
+      return logAttackTime.getAttackStop();
+    default:
+      return 0.0;
+  }
+}
+
 //----------------------------------------------
 float ofxAudioAnalyzerUnit::getValue(ofxAAAlgorithm algorithm, float smooth, bool normalized){
     

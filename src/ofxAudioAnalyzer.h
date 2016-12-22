@@ -46,6 +46,8 @@ class ofxAudioAnalyzer{
     ///\param channel: starting from 0 (for stereo setup, 0 and 1)
     ///\param smooth: smoothing amount. 0.0=non smoothing, 1.0=fixed value
     float getValue(ofxAAAlgorithm algorithm, int channel, float smooth=0.0, bool normalized=false);
+    float getAttackStart(ofxAAAlgorithm algorithm, int channel);
+    float getAttackStop(ofxAAAlgorithm algorithm, int channel);
     
     ///Gets values of vector output Algorithms.
     ///\param algorithm

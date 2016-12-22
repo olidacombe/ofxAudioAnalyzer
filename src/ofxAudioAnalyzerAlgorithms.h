@@ -260,6 +260,8 @@ private:
 
 class ofxAALogAttackTimeAlgorithm : public ofxAABaseAlgorithm {
 public:
+  float getAttackStart();
+  float getAttackStop();
   Real attackStart, attackStop;
 };
 

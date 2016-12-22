@@ -88,6 +88,8 @@ public:
     void setOnsetsParameters(float alpha, float silenceTresh, float timeTresh, bool useTimeTresh = true);
     void setSalienceFunctionPeaksParameters(int maxPeaks);
     
+    float getAttackStart(ofxAAAlgorithm algorithm);
+    float getAttackStop(ofxAAAlgorithm algorithm);
     float getValue(ofxAAAlgorithm algorithm, float smooth=0.0, bool normalized=false);
     vector<float>& getValues(ofxAAAlgorithm algorithm, float smooth=0.0);
     vector<SalienceFunctionPeak>& getPitchSaliencePeaksRef(float smooth=0.0);

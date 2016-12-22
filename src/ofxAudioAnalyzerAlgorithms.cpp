@@ -300,6 +300,13 @@ void ofxAAPitchDetectAlgorithm::setMaxPitchEstimatedValue(float value){
     pitchMaxEstimatedValue = value;
 }
 
+float ofxAALogAttackTimeAlgorithm::getAttackStart() {
+  return attackStart;
+}
+
+float ofxAALogAttackTimeAlgorithm::getAttackStop() {
+  return attackStop;
+}
 
 //-------------------------------------------
 #pragma mark - ofxAATuningFrequencyAlgorithm

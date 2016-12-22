@@ -104,6 +104,28 @@ void ofxAudioAnalyzer::exit(){
     
 }
 //-------------------------------------------------------
+float ofxAudioAnalyzer::getAttackStart(ofxAAAlgorithm algorithm, int channel){
+    
+    if (channel >= _channels){
+        ofLogError()<<"ofxAudioAnalyzer: channel for getting value is incorrect.";
+        return 0.0;
+    }
+    
+    return channelAnalyzerUnits[channel]->getAttackStart(algorithm);
+
+}
+//-------------------------------------------------------
+float ofxAudioAnalyzer::getAttackStop(ofxAAAlgorithm algorithm, int channel){
+    
+    if (channel >= _channels){
+        ofLogError()<<"ofxAudioAnalyzer: channel for getting value is incorrect.";
+        return 0.0;
+    }
+    
+    return channelAnalyzerUnits[channel]->getAttackStop(algorithm);
+
+}
+//-------------------------------------------------------
 float ofxAudioAnalyzer::getValue(ofxAAAlgorithm algorithm, int channel, float smooth, bool normalized){
     
     if (channel >= _channels){
