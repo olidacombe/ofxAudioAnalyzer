@@ -177,7 +177,7 @@ void ofxAudioAnalyzerUnit::setup(int sampleRate, int bufferSize){
     
     tristimulus.algorithm = factory.create("Tristimulus");
 
-    logAttackTime.algorithm = factory.create("LogAttackTime");
+    logAttackTime.algorithm = factory.create("LogAttackTime", "sampleRate", _samplerate);
     // our app breaks when this is active...?
     //logAttackTime.setActive(false);
     
