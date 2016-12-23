@@ -51,6 +51,7 @@ enum ofxAAAlgorithm{
     ODD_TO_EVEN,
     STRONG_PEAK,
     STRONG_DECAY,
+    ATTACK_TIME,
     LOG_ATTACK_TIME,
     SPECTRUM,
     MEL_BANDS,
@@ -258,7 +259,7 @@ private:
 
 };
 
-class ofxAALogAttackTimeAlgorithm : public ofxAABaseAlgorithm {
+class ofxAAAttackTimeAlgorithm : public ofxAABaseAlgorithm {
 public:
   float getAttackStart();
   float getAttackStop();

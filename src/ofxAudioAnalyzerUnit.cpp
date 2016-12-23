@@ -57,6 +57,7 @@ void ofxAudioAnalyzerUnit::setup(int sampleRate, int bufferSize){
     oddToEven.init();
     strongPeak.init();
     strongDecay.init();
+    attackTime.init();
     logAttackTime.init();
     
     spectrum.initAndAssignSize((bufferSize/2)+1, 0.0);
@@ -177,9 +178,8 @@ void ofxAudioAnalyzerUnit::setup(int sampleRate, int bufferSize){
     
     tristimulus.algorithm = factory.create("Tristimulus");
 
+    attackTime.algorithm = factory.create("AttackTime", "sampleRate", _samplerate);
     logAttackTime.algorithm = factory.create("LogAttackTime", "sampleRate", _samplerate);
-    // our app breaks when this is active...?
-    //logAttackTime.setActive(false);
     
     
     #pragma mark -Connect algorithms
@@ -282,6 +282,11 @@ void ofxAudioAnalyzerUnit::setup(int sampleRate, int bufferSize){
     //StrongDecay
     strongDecay.algorithm->input("signal").set(dcremoval.realValues);
     strongDecay.algorithm->output("strongDecay").set(strongDecay.realValue);
+    //AttackTime
+    attackTime.algorithm->input("signal").set(dcremoval.realValues);
+    attackTime.algorithm->output("attackTime").set(attackTime.realValue);
+    attackTime.algorithm->output("attackStart").set(attackTime.attackStart);
+    attackTime.algorithm->output("attackStop").set(attackTime.attackStop);
     //LogAttackTime
     logAttackTime.algorithm->input("signal").set(dcremoval.realValues);
     logAttackTime.algorithm->output("logAttackTime").set(logAttackTime.realValue);
@@ -371,6 +376,7 @@ void ofxAudioAnalyzerUnit::analyze(const vector<float> & inBuffer){
     if(dcremoval.realValues[0] != 0.0){
         //the strong decay is not defined for a zero signal
         strongDecay.compute();
+        attackTime.compute();
         logAttackTime.compute();
     }
     
@@ -415,6 +421,7 @@ void ofxAudioAnalyzerUnit::exit(){
     oddToEven.deleteAlgorithm();
     strongPeak.deleteAlgorithm();
     strongDecay.deleteAlgorithm();
+    attackTime.deleteAlgorithm();
     logAttackTime.deleteAlgorithm();
     tristimulus.deleteAlgorithm();
     
@@ -527,6 +534,9 @@ void ofxAudioAnalyzerUnit::setActive(ofxAAAlgorithm algorithm, bool state){
         case STRONG_DECAY:
             strongDecay.setActive(state);
             break;
+        case ATTACK_TIME:
+            attackTime.setActive(state);
+            break;
         case LOG_ATTACK_TIME:
             logAttackTime.setActive(state);
             break;
@@ -614,6 +624,9 @@ bool ofxAudioAnalyzerUnit::getIsActive(ofxAAAlgorithm algorithm){
         case STRONG_DECAY:
             return strongDecay.getIsActive();
             break;
+        case ATTACK_TIME:
+            return attackTime.getIsActive();
+            break;
         case LOG_ATTACK_TIME:
             return logAttackTime.getIsActive();
             break;
@@ -633,6 +646,8 @@ float ofxAudioAnalyzerUnit::getAttackStart(ofxAAAlgorithm algorithm) {
     case LOG_ATTACK_TIME:
       return logAttackTime.getAttackStart();
       //break; // erm...
+    case ATTACK_TIME:
+      return attackTime.getAttackStart();
     default:
       return 0.0;
       //break;
@@ -643,6 +658,8 @@ float ofxAudioAnalyzerUnit::getAttackStop(ofxAAAlgorithm algorithm) {
   switch(algorithm) {
     case LOG_ATTACK_TIME:
       return logAttackTime.getAttackStop();
+    case ATTACK_TIME:
+      return attackTime.getAttackStop();
     default:
       return 0.0;
   }
@@ -792,6 +809,18 @@ float ofxAudioAnalyzerUnit::getValue(ofxAAAlgorithm algorithm, float smooth, boo
             }
             break;
             
+        case ATTACK_TIME:
+            if (normalized){
+                r = smooth ?
+                attackTime.getSmoothedValueNormalized(smooth):
+                attackTime.getValueNormalized();
+            }else{
+                r = smooth ?
+                attackTime.getSmoothedValue(smooth):
+                attackTime.getValue();
+            }
+            break;
+            
         case LOG_ATTACK_TIME:
             if (normalized){
                 r = smooth ?
@@ -843,12 +872,6 @@ vector<float>& ofxAudioAnalyzerUnit::getValues(ofxAAAlgorithm algorithm, float s
         case TRISTIMULUS:
             return smooth ? tristimulus.getSmoothedValues(smooth) : tristimulus.getValues();
             break;
-            
-            /*
-        case LOG_ATTACK_TIME:
-            return smooth ? logAttackTime.getSmoothedValues(smooth) : logAttackTime.getValues();
-            break;
-            */
             
         default:
             ofLogError()<<"ofxAudioAnalyzerUnit: wrong algorithm for getting values.";
