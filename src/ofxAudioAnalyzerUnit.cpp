@@ -403,6 +403,8 @@ void ofxAudioAnalyzerUnit::analyze(const vector<float> & inBuffer){
     oddToEven.castValueToFloat();
     strongPeak.castValueToFloat();
     strongDecay.castValueToFloat();
+    attackTime.castValueToFloat();
+    logAttackTime.castValueToFloat();
     
     pitchSalienceFunctionPeaks.castValuesToFloat();
     
